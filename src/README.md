@@ -6,6 +6,8 @@ A super simple FastAPI application that allows students to view and sign up for 
 
 - View all available extracurricular activities
 - Sign up for activities
+- View active announcements on the homepage
+- Manage announcements (create, edit, delete) when signed in as a teacher/admin
 
 ## Getting Started
 
@@ -31,6 +33,11 @@ A super simple FastAPI application that allows students to view and sign up for 
 | ------ | ----------------------------------------------------------------- | ------------------------------------------------------------------- |
 | GET    | `/activities`                                                     | Get all activities with their details and current participant count |
 | POST   | `/activities/{activity_name}/signup?email=student@mergington.edu` | Sign up for an activity                                             |
+| GET    | `/announcements/active`                                           | Get currently active announcements for public display               |
+| GET    | `/announcements?teacher_username={username}`                      | Get all announcements for management (authenticated)                |
+| POST   | `/announcements?teacher_username={username}`                      | Create an announcement (authenticated)                              |
+| PUT    | `/announcements/{announcement_id}?teacher_username={username}`    | Update an announcement (authenticated)                              |
+| DELETE | `/announcements/{announcement_id}?teacher_username={username}`    | Delete an announcement (authenticated)                              |
 
 ## Data Model
 
@@ -47,4 +54,11 @@ The application uses a simple data model with meaningful identifiers:
    - Name
    - Grade level
 
-All data is stored in memory, which means data will be reset when the server restarts.
+Data is stored in MongoDB collections (activities, teachers, and announcements).
+
+## Announcement Rules
+
+- Announcement message is required.
+- Expiration date is required.
+- Start date is optional.
+- If start date is provided, expiration date must be later than start date.
